@@ -8,11 +8,24 @@ SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.readonly",
 ]
+import os
+import json
 
-creds = Credentials.from_service_account_file(
-    "drive-upload-505005-560d7c156396.json",
-    scopes=SCOPES
-)
+if os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON"):
+    service_account_info = json.loads(
+        os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"]
+    )
+
+    creds = Credentials.from_service_account_info(
+        service_account_info,
+        scopes=SCOPES
+    )
+else:
+    creds = Credentials.from_service_account_file(
+        "drive-upload-505005-560d7c156396.json",
+        scopes=SCOPES
+    )
+
 
 gc = gspread.authorize(creds)
 spreadsheet = gc.open("TODO リスト")
