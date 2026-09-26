@@ -22,7 +22,7 @@ if os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON"):
     )
 else:
     creds = Credentials.from_service_account_file(
-        "drive-upload-505005-560d7c156396.json",
+        "drive-upload-505005-c3b65ed15024.json",
         scopes=SCOPES
     )
 
@@ -52,10 +52,18 @@ HTML = """
         </p>
 
         <p>
-            <input type="date" name="due_date">
+           <p>
+    <input type="date" name="due_date">
+        <p>
+            <select name="priority">
+                <option value="低">低</option>
+                <option value="中" selected>中</option>
+                <option value="高">高</option>
+            </select>
         </p>
 
-        <button type="submit">追加</button>
+<button type="submit">追加</button>
+        button type="submit">追加</button>
     </form>
 
     <h2>Todo一覧</h2>
@@ -105,7 +113,9 @@ HTML = """
                     {% if todo[3] %}
                         【期日：{{ todo[3] }}】
                     {% endif %}
-
+                    {% if todo[5] %}
+                        【重要度：{{ todo[5] }}】
+                    {% endif %}
                     <form method="POST"
                           action="/complete/{{ todo[0] }}"
                           style="display:inline;">
@@ -148,7 +158,7 @@ def add():
     title = request.form["title"]
     content = request.form["content"]
     due_date = request.form["due_date"]
-
+    priority = request.form["priority"]
     existing_ids = sheet.col_values(1)[1:]
 
     numbers = []
@@ -166,7 +176,8 @@ def add():
         title,
         content,
         due_date,
-        "未完了"
+        "未完了",
+        priority
     ])
 
     return redirect("/")
