@@ -1,7 +1,7 @@
 import os
 import json
 from datetime import datetime, timedelta
-
+import base64
 import gspread
 import requests
 from google.oauth2.service_account import Credentials
@@ -18,9 +18,13 @@ SCOPES = [
 ]
 
 if os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON"):
-    service_account_info = json.loads(
+import base64
+
+service_account_info = json.loads(
+    base64.b64decode(
         os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"]
-    )
+    ).decode("utf-8")
+)   
 
     creds = Credentials.from_service_account_info(
         service_account_info,
