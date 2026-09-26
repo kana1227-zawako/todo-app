@@ -88,3 +88,4 @@ for todo in todos:
         )
 
         print("LINE送信結果:", response.status_code)
+        print("LINEエラー内容:", response.text)
