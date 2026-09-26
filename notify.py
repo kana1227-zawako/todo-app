@@ -1,6 +1,6 @@
 import os
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import base64
 import gspread
 import requests
@@ -40,7 +40,8 @@ gc = gspread.authorize(creds)
 spreadsheet = gc.open("TODO リスト")
 sheet = spreadsheet.sheet1
 
-tomorrow = (datetime.now() + timedelta(days=1)).date()
+JST = timezone(timedelta(hours=9))
+tomorrow = (datetime.now(JST) + timedelta(days=1)).date()
 
 todos = sheet.get_all_records()
 
